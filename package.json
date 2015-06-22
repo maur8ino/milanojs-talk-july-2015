@@ -4,8 +4,8 @@
   "description": "Source code of my talk \"Javascript Test Dummies\" for MilanoJS",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive --compilers jsx:babel/register -C",
-    "test-watch": "mocha --recursive --compilers jsx:babel/register -Cw"
+    "test": "karma start karma.conf.js",
+    "test-watch": "karma start karma.conf.js --auto-watch --no-single-run"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,14 @@
   "dependencies": {},
   "devDependencies": {
     "babel": "^5.6.1",
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.4",
     "chai": "^3.0.0",
+    "karma": "^0.12.37",
+    "karma-browserify": "^4.2.1",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-mocha": "^0.2.0",
+    "karma-mocha-reporter": "^1.0.2",
     "mocha": "^2.2.5",
     "sinon": "^1.15.3"
   }
