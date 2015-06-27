@@ -45,8 +45,18 @@ let getUserReposList = (username) => {
   }
 };
 
+let getUserRepo = (username, reponame) => {
+  try {
+    return get(getUserRepoURL(username, reponame)).then(JSON.parse);
+  }
+  catch(error) {
+    return Promise.reject(error);
+  }
+};
+
 module.exports = {
   getUserReposListURL: getUserReposListURL,
   getUserRepoURL: getUserRepoURL,
-  getUserReposList: getUserReposList
+  getUserReposList: getUserReposList,
+  getUserRepo: getUserRepo
 };

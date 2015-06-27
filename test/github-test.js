@@ -95,4 +95,48 @@ describe('github module', () => {
       done();
     });
   });
+
+  it('should make an ajax request for specific user\'s repository and resolve it', (done) => {
+    server.respondWith('GET', 'https://api.github.com/repos/maur8ino/react-bem-mixin', [
+      200,
+      { 'Content-Type': 'application/json' },
+      '{ "id": 37024234, "name": "react-bem-mixin", "full_name": "maur8ino/react-bem-mixin", ' +
+      '"html_url": "https://github.com/maur8ino/react-bem-mixin", ' +
+      '"description": "A React.js mixin for generating BEM class names" }'
+    ]);
+
+    github.getUserRepo('maur8ino', 'react-bem-mixin').then((response) => {
+      expect(response).to.deep.equal({
+        id: 37024234,
+        name: 'react-bem-mixin',
+        full_name: 'maur8ino/react-bem-mixin',
+        html_url: 'https://github.com/maur8ino/react-bem-mixin',
+        description: 'A React.js mixin for generating BEM class names'
+      });
+
+      done();
+    });
+
+    server.respond();
+  });
+
+  it('should make an ajax request for specific user\'s repository and reject it', (done) => {
+    server.respondWith('GET', 'https://api.github.com/repos/maur8ino/react-bem-mixin', [
+      500,
+      { 'Content-Type': 'text/html' },
+      'KO'
+    ]);
+
+    github.getUserRepo('maur8ino', 'react-bem-mixin').catch(() => {
+      done();
+    });
+
+    server.respond();
+  });
+
+  it('should reject the promise if the user or repo are undefined', (done) => {
+    github.getUserRepo().catch(() => {
+      done();
+    });
+  });
 });
