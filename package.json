@@ -6,6 +6,8 @@
   "scripts": {
     "test": "karma start karma.conf.js",
     "test-watch": "karma start karma.conf.js --auto-watch --no-single-run",
+    "cucumber": "cucumber-js",
+    "test-e2e": "parallelshell \"npm run serve\" \"npm run cucumber\"",
     "watchify": "watchify src/app.js -t babelify -d -o public/bundle.js",
     "watch": "parallelshell \"npm run watchify\" \"npm run browser-sync\"",
     "dist": "browserify src/app.js -t babelify -o dist/bundle.js",
@@ -28,6 +30,7 @@
     "browserify": "^10.2.4",
     "chai": "^3.0.0",
     "coffee-script": "^1.9.3",
+    "cucumber": "^0.5.2",
     "http-server": "^0.8.0",
     "karma": "^0.12.37",
     "karma-browserify": "^4.2.1",
@@ -38,6 +41,7 @@
     "parallelshell": "^1.2.0",
     "rewire": "^2.3.4",
     "rewireify": "^0.2.1",
+    "selenium-webdriver": "^2.46.1",
     "sinon": "^1.15.3",
     "watchify": "^3.2.3"
   }
