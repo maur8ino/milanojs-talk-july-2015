@@ -7,12 +7,12 @@ module.exports = function (config) {
     frameworks: ['mocha', 'browserify'],
 
     files: [
-      'src/**/*.js',
+      'src/**/*.js?',
       'test/**/*-test.js'
     ],
 
     preprocessors: {
-      'src/**/*.js': 'browserify',
+      'src/**/*.js?': 'browserify',
       'test/**/*-test.js': 'browserify'
     },
 
