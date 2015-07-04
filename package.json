@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "karma start karma.conf.js",
-    "test-watch": "karma start karma.conf.js --auto-watch --no-single-run"
+    "test-watch": "karma start karma.conf.js --auto-watch --no-single-run",
+    "watchify": "watchify src/app.js -t babelify -d -o public/bundle.js",
+    "watch": "parallelshell \"npm run watchify\" \"npm run browser-sync\"",
+    "dist": "browserify src/app.js -t babelify -o dist/bundle.js",
+    "browser-sync": "browser-sync start --files \"dist/bundle.js\" --server public/ --reload-delay 1000",
+    "serve": "npm run dist && http-server dist/ -p 3000 -s"
   },
   "repository": {
     "type": "git",
@@ -19,14 +24,21 @@
   "devDependencies": {
     "babel": "^5.6.1",
     "babelify": "^6.1.2",
+    "browser-sync": "^2.7.13",
     "browserify": "^10.2.4",
     "chai": "^3.0.0",
+    "coffee-script": "^1.9.3",
+    "http-server": "^0.8.0",
     "karma": "^0.12.37",
     "karma-browserify": "^4.2.1",
     "karma-chrome-launcher": "^0.2.0",
     "karma-mocha": "^0.2.0",
     "karma-mocha-reporter": "^1.0.2",
     "mocha": "^2.2.5",
-    "sinon": "^1.15.3"
+    "parallelshell": "^1.2.0",
+    "rewire": "^2.3.4",
+    "rewireify": "^0.2.1",
+    "sinon": "^1.15.3",
+    "watchify": "^3.2.3"
   }
 }

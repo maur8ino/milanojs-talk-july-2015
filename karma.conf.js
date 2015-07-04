@@ -18,7 +18,7 @@ module.exports = function (config) {
 
     browserify: {
       debug: true,
-      transform: ['babelify']
+      transform: ['rewireify', 'babelify']
     },
 
     reporters: ['mocha'],

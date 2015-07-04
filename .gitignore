@@ -28,3 +28,6 @@ node_modules
 
 # OSX Specific
 .DS_Store
+
+# bundles
+bundle.js
