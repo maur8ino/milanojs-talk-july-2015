@@ -53,6 +53,7 @@ describe('github module', () => {
   });
 
   it('should make an ajax request for user\'s repositories list and resolve it', (done) => {
+    server.autoRespond = true;
     server.respondWith('GET', 'https://api.github.com/users/maur8ino/repos', [
       200,
       { 'Content-Type': 'application/json' },
@@ -72,11 +73,43 @@ describe('github module', () => {
 
       done();
     });
+  });
 
+  it('should make an ajax request for user\'s repositories list and resolve it using cache', (done) => {
+    // First request
+    server.respondWith('GET', 'https://api.github.com/users/maur8ino/repos', [
+      200,
+      { 'Content-Type': 'application/json', 'ETag': '12345678abcd' },
+      '[{ "id": 35957173, "name": "angular-post-message" }, { "id": 37024234, "name": "react-bem-mixin" }]'
+    ]);
+    github.getUserReposList('maur8ino');
+    server.respond();
+
+    // Second request same url
+    server.respondWith('GET', 'https://api.github.com/users/maur8ino/repos', [
+      304,
+      { 'Content-Type': 'application/json', 'ETag': '12345678abcd' },
+      ''
+    ]);
+
+    github.getUserReposList('maur8ino').then((response) => {
+      expect(response).to.deep.equal(
+        [{
+          id: 35957173,
+          name: 'angular-post-message'
+        }, {
+          id: 37024234,
+          name: 'react-bem-mixin'
+        }]
+      );
+
+      done();
+    });
     server.respond();
   });
 
   it('should make an ajax request for user\'s repositories list and reject it', (done) => {
+    server.autoRespond = true;
     server.respondWith('GET', 'https://api.github.com/users/maur8ino/repos', [
       500,
       { 'Content-Type': 'text/html' },
@@ -86,8 +119,6 @@ describe('github module', () => {
     github.getUserReposList('maur8ino').catch(() => {
       done();
     });
-
-    server.respond();
   });
 
   it('should reject the promise if the user is undefined', (done) => {
@@ -97,6 +128,7 @@ describe('github module', () => {
   });
 
   it('should make an ajax request for specific user\'s repository and resolve it', (done) => {
+    server.autoRespond = true;
     server.respondWith('GET', 'https://api.github.com/repos/maur8ino/react-bem-mixin', [
       200,
       { 'Content-Type': 'application/json' },
@@ -116,11 +148,42 @@ describe('github module', () => {
 
       done();
     });
+  });
 
+  it('should make an ajax request for specific user\'s repository and resolve it using cache', (done) => {
+    // First request
+    server.respondWith('GET', 'https://api.github.com/repos/maur8ino/react-bem-mixin', [
+      200,
+      { 'Content-Type': 'application/json', 'ETag': '12345678abcd' },
+      '{ "id": 37024234, "name": "react-bem-mixin", "full_name": "maur8ino/react-bem-mixin", ' +
+      '"html_url": "https://github.com/maur8ino/react-bem-mixin", ' +
+      '"description": "A React.js mixin for generating BEM class names" }'
+    ]);
+    github.getUserRepo('maur8ino', 'react-bem-mixin');
+    server.respond();
+
+    // Second request same url
+    server.respondWith('GET', 'https://api.github.com/repos/maur8ino/react-bem-mixin', [
+      304,
+      { 'Content-Type': 'application/json', 'ETag': '12345678abcd' },
+      ''
+    ]);
+    github.getUserRepo('maur8ino', 'react-bem-mixin').then((response) => {
+      expect(response).to.deep.equal({
+        id: 37024234,
+        name: 'react-bem-mixin',
+        full_name: 'maur8ino/react-bem-mixin',
+        html_url: 'https://github.com/maur8ino/react-bem-mixin',
+        description: 'A React.js mixin for generating BEM class names'
+      });
+
+      done();
+    });
     server.respond();
   });
 
   it('should make an ajax request for specific user\'s repository and reject it', (done) => {
+    server.autoRespond = true;
     server.respondWith('GET', 'https://api.github.com/repos/maur8ino/react-bem-mixin', [
       500,
       { 'Content-Type': 'text/html' },
@@ -130,8 +193,6 @@ describe('github module', () => {
     github.getUserRepo('maur8ino', 'react-bem-mixin').catch(() => {
       done();
     });
-
-    server.respond();
   });
 
   it('should reject the promise if the user or repo are undefined', (done) => {
