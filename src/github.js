@@ -1,3 +1,5 @@
+let Promise = require('es6-promise').Promise;
+
 const githubBaseURL = 'https://api.github.com';
 
 let getUserReposListURL = (username) => {

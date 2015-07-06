@@ -21,6 +21,8 @@
   "author": "Mauro Verrocchio <mauroverrocchio@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "es5-shim": "^4.1.7",
+    "es6-promise": "^2.3.0",
     "react": "^0.13.3"
   },
   "devDependencies": {
@@ -37,6 +39,7 @@
     "karma-chrome-launcher": "^0.2.0",
     "karma-mocha": "^0.2.0",
     "karma-mocha-reporter": "^1.0.2",
+    "karma-phantomjs-launcher": "^0.2.0",
     "mocha": "^2.2.5",
     "parallelshell": "^1.2.0",
     "rewire": "^2.3.4",

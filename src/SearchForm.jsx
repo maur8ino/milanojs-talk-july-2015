@@ -1,3 +1,4 @@
+require('es5-shim');
 let React = require('react');
 
 let SearchForm = React.createClass({
